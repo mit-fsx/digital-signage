@@ -1,0 +1,3 @@
+admin.pl var/www
+dot-xsession usr/share/digital-signage
+logo.jpg usr/share/digital-signage
