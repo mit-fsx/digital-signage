@@ -1,0 +1,15 @@
+#!/bin/sh
+
+SLIDEDIR=/home/sign/slides
+
+xset s off
+xset -dpms
+xset s noblank
+
+while true; do
+    FILES="/home/sign/slides/*"
+    if [ $(ls -l "$SLIDEDIR" 2>/dev/null | wc -l) = "0" ]; then
+	FILES="/home/sign/istlogo.jpg"
+    fi
+    qiv -CfimNsd 30 $FILES
+done
