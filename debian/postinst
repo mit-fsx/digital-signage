@@ -24,6 +24,7 @@ case "$1" in
 	if ! getent passwd $user > /dev/null; then
 	    adduser --system $user
 	fi
+	cp -f /usr/share/digital-signage/dot-xsession /home/$user/.xsession
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

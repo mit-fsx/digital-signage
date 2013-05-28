@@ -2,7 +2,7 @@ Source: digital-signage
 Section: unknown
 Priority: extra
 Maintainer: Jonathan Reed <jdreed@mit.edu>
-Build-Depends: debhelper (>= 7.0.50)
+Build-Depends: debhelper (>= 7.0.50~), config-package-dev (>= 5.0~)
 Standards-Version: 3.9.3
 
 Package: digital-signage
