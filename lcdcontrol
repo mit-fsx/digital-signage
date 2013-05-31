@@ -1,0 +1,19 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+use lib '/usr/lib/digital-signage/perl5';
+use SharpLCD;
+
+$| = 1;
+
+my $lcd = new SharpLCD("/dev/ttyUSB0");
+
+if ($ARGV[0] eq 'get') {
+    print $lcd->get($ARGV[1]) . "\n";
+} elsif ($ARGV[0] eq 'set') {
+    print $lcd->set($ARGV[1], $ARGV[2], 1) ? "Success.\n" : "Failure.\n";
+} else {
+    die "Usage: $0 [get|set] param [val]\n";
+}
+

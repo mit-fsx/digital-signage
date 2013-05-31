@@ -1,3 +1,10 @@
-admin.pl var/www
+admin.pl usr/lib/digital-signage/cgi
+lcd.pl usr/lib/digital-signage/cgi
+lcdcontrol usr/lib/digital-signage
+SharpLCD.pm usr/lib/digital-signage/perl5
+slides.odp usr/share/digital-signage/assets
+slides.ppt usr/share/digital-signage/assets
 dot-xsession usr/share/digital-signage
 logo.jpg usr/share/digital-signage
+lightdm.conf.mit etc/lightdm
+99-digital-signage.conf etc/lighttpd/conf-enabled

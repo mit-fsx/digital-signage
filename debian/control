@@ -1,5 +1,5 @@
 Source: digital-signage
-Section: unknown
+Section: mit/extra
 Priority: extra
 Maintainer: Jonathan Reed <jdreed@mit.edu>
 Build-Depends: debhelper (>= 7.0.50~), config-package-dev (>= 5.0~)
@@ -7,6 +7,6 @@ Standards-Version: 3.9.3
 
 Package: digital-signage
 Architecture: all
-Depends: ${misc:Depends}, 
+Depends: ${misc:Depends}, imagemagick, adduser, x11-apps, lighttpd, xdotool
 Description: Low-rent digital signage for a Pi
  This package pretends to be digital signage

@@ -1,2 +1,3 @@
-var/signage/slides/thumbs
+var/spool/digital-signage/slides
+var/spool/digital-signage/thumbs
 

@@ -1,2 +1,0 @@
-/etc/lighttpd/lighttpd.conf debian/transform_lighttpd.conf
-/etc/lightdm/lightdm.conf debian/transform_lightdm.conf

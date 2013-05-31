@@ -21,10 +21,25 @@ set -e
 case "$1" in
     configure)
 	user=sign
-	if ! getent passwd $user > /dev/null; then
-	    adduser --system $user
+	group=$user
+	dir=/var/spool/digital-signage
+	if ! getent group $group > /dev/null; then
+	    addgroup --system $group
 	fi
-	cp -f /usr/share/digital-signage/dot-xsession /home/$user/.xsession
+	if ! getent passwd $user > /dev/null; then
+	    adduser --system $user --ingroup $group
+	fi
+	# Return of '2' in modern lighty-enable-mod means 'no action taken'
+	lighty-enable-mod cgi >/dev/null 2>&1 || [ $? -eq 2 ]
+	adduser www-data $group
+	adduser www-data dialout
+	if ! diff -q /usr/share/digital-signage/dot-xsession /home/$user/.xsession >/dev/null 2>&1; then
+	    cp -f /usr/share/digital-signage/dot-xsession /home/$user/.xsession
+	    invoke-rc.d --force lightdm restart || :
+	fi
+	chown -R $user:$group $dir
+	chmod -R 770 $dir
+	invoke-rc.d lighttpd force-reload || :
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
