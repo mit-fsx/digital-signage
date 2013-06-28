@@ -1,3 +1,9 @@
+digital-signage (1.1) unstable; urgency=low
+
+  * Switch to a Python app
+
+ -- Jonathan Reed <jdreed@mit.edu>  Fri, 28 Jun 2013 10:20:03 -0400
+
 digital-signage (1.0) unstable; urgency=low
 
   * Initial Release.
