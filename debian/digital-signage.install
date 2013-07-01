@@ -9,3 +9,7 @@ dot-xsession usr/share/digital-signage
 logo.jpg usr/share/digital-signage
 lightdm.conf.mit etc/lightdm
 99-digital-signage.conf etc/lighttpd/conf-enabled
+config.ini etc/sign
+sign.ui usr/share/digital-signage
+sign.py usr/lib/digital-signage
+

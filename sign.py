@@ -28,6 +28,8 @@ class DigitalSignage:
                            'SW': range(203, 248),
                            'W': range(249, 297),
                            'NW': range(298, 337) }
+
+    # U+2191 and U+2193 are the up and down arrows, respectively
     barometer_directions = { "0": "",
                              "1": u'\u2191',
                              "2": u'\u2193' }
@@ -39,14 +41,14 @@ class DigitalSignage:
         self.screenSize = (self.monitorGeometry.x + self.monitorGeometry.width,
                            self.monitorGeometry.y + self.monitorGeometry.height)
         handlers = {}
-        self.config = { 'update_interval': '60',
+        self.config = { 'update_interval': '20',
                         'weather_uri': None,
                         'slide_directory': '/var/spool/digital-signage/slides',
                         'screen_size': '1024x768',
                         }
         self.config.update(config_dictionary)
         try:
-            self.config["update_interval"] = int(self.config["update_interval"])
+            self.config["update_interval"] = int(self.config["update_interval"]) * 1000
         except ValueError:
             print >>sys.stderr, "Invalid update interval: " + self.config["update_interval"]
             sys.exit(0)
@@ -63,13 +65,15 @@ class DigitalSignage:
             print >> sys.stderr, "FATAL: Unable to load UI: ", e
             sys.exit(-1)
         self.winMain = self.builder.get_object("mainWindow")
+        self.blackBackground = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False, 8, self.screenSize[0], self.screenSize[1])
+        self.img = self.builder.get_object("imgSign")
+        self.img.set_from_pixbuf(self.blackBackground)
         self.winMain.set_position(Gtk.WindowPosition.CENTER)
         self.winMain.show()
         self.timeLabel = self.builder.get_object("lblTime")
         self.timeFormat = "%A\n\n%B %e, %Y\n\n%l:%M:%S %p"
         self.notebook = self.builder.get_object("notebook1")
-        self.img = self.builder.get_object("imgSign")
-        self.slideshow()
+        self.prepare_slideshow()
 
     def _debug(self, *args):
         if self.debugMode:
@@ -81,51 +85,49 @@ class DigitalSignage:
     # General purpose time callback
     def tick(self):
         self.timeLabel.set_text(time.strftime(self.timeFormat, time.localtime(time.time())))
-        print >>sys.stderr, "tick"
         return True
 
     def next_slide(self):
-        print >>sys.stderr, "next slide", self.slide, len(self.imgFiles)
         if self.slide >= len(self.imgFiles):
-            print >>sys.stderr, "end show"
             self.clock_and_weather()
             return False
         try:
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file(os.path.join(self.config["slide_directory"], self.imgFiles[self.slide]))
-#            scaled = pixbuf.scale_simple(self.screenSize[0], self.screenSize[1], GdkPixbuf.InterpType.BILINEAR)
-        except GLib.GError, e:
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(self.imgFiles[self.slide])
+            (width, height) = (pixbuf.get_width(), pixbuf.get_height())
+            if width > self.screenSize[0] or height > self.screenSize[1]:
+                pixbuf = pixbuf.scale_simple(self.screenSize[0] if self.screenSize[0] < width else width, self.screenSize[1] if self.screenSize[1] < height else height, GdkPixbuf.InterpType.BILINEAR)
+        except GLib.GError as e:
+            print >>sys.stderr, "Error while reading file %s (%s)" % (self.imgFiles[self.slide], e.message)
             # Just move on to the next image
             self.slide += 1
             return True
-#            print >>sys.stderr, "Error", e
         self.slide += 1
         self.img.set_from_pixbuf(pixbuf)
         return True
 
-    def slideshow(self):
+    def prepare_slideshow(self):
         # todo: determine what page the widget is on
         slide_directory = self.config["slide_directory"]
         self.imgFiles = []
         try:
-            self.imgFiles = [ f for f in os.listdir(slide_directory) if os.path.isfile(os.path.join(slide_directory, f)) ]
-        except OSError:
-            print >>sys.stderr, "slides missing"
+            self.imgFiles = [ os.path.join(slide_directory, f) for f in os.listdir(slide_directory) if os.path.isfile(os.path.join(slide_directory, f)) ]
+        except OSError as e:
+            print >>sys.stderr, "Error while reading slide directory: ", e.message
         if len(self.imgFiles) < 1:
             self.imgFiles.append(self.config["logo"])
         self.slide = 0
-        self.blackBackground = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False, 8, self.screenSize[0], self.screenSize[1])
-        self.img.set_from_pixbuf(self.blackBackground)
         self.notebook.set_current_page(1)
         # render the window and set its size
         while Gtk.events_pending():
             Gtk.main_iteration()
-        GObject.timeout_add(1000, self.next_slide)
+        GObject.timeout_add(self.config["update_interval"], self.next_slide)
         self.next_slide()
-
+        return False
     
     def clock_and_weather(self):
         self.update_forecast()
         self.notebook.set_current_page(0)
+        GObject.timeout_add(self.config["update_interval"], self.prepare_slideshow)
 
     def update_forecast(self):
         feed = feedparser.parse(self.config["weather_uri"])
@@ -137,7 +139,6 @@ class DigitalSignage:
             atmo = feed.feed.yweather_atmosphere
             wind = feed.feed.yweather_wind
             astro = feed.feed.yweather_astronomy
-            print >>sys.stderr, astro, atmo
             windtxt = "n/a"
             try:
                 for i in self.compass_directions:

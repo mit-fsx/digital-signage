@@ -1,18 +1,8 @@
-SLIDEDIR=/var/spool/digital-signage/slides
-
 xset s off
 xset -dpms
 xset s noblank
 xdotool mousemove 1024 768
 
 while true; do
-    /usr/lib/digital-signage/sign
-    # FILES="$SLIDEDIR/*"
-    # if [ $(find "$SLIDEDIR" -type f 2>/dev/null | wc -l) = "0" ]; then
-    # 	FILES="/usr/share/digital-signage/logo.jpg"
-    # fi
-    # qiv -CfimNsd 60 $FILES
-    # xclock -geometry 580x580+212+94 -update 1 -norender -hd grey &
-    # sleep 60
-    # pkill xclock
+    /usr/lib/digital-signage/sign.py
 done
