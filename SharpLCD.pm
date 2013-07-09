@@ -12,6 +12,7 @@ sub new {
     my $class = ref($proto) || $proto;
     my $self = {};
     $self->{_port} = Device::SerialPort->new("/dev/ttyUSB0");
+    defined($self->{_port}) || croak "Unable to initialize serial port.";
     $self->{_port}->databits(8);
     $self->{_port}->baudrate(9600);
     $self->{_port}->stopbits(1);
@@ -19,11 +20,9 @@ sub new {
     $self->{_port}->handshake("none");
     $self->{_port}->stty_icanon(1);
     $self->{_port}->write_settings;
-    $self->{_debug} = $debug;
-
     # Set the characters that terminate each response
     $self->{_port}->are_match("\r\n");
-
+    $self->{_debug} = $debug;
     bless ($self, $class);
     return $self;
 }

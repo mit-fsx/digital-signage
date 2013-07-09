@@ -3,8 +3,6 @@ lcd.pl usr/lib/digital-signage/cgi
 lcdcontrol usr/lib/digital-signage
 SharpLCD.pm usr/lib/digital-signage/perl5
 index.html usr/share/digital-signage/docroot
-slides.odp usr/share/digital-signage/assets
-slides.ppt usr/share/digital-signage/assets
 dot-xsession usr/share/digital-signage
 logo.jpg usr/share/digital-signage
 lightdm.conf.mit etc/lightdm
@@ -12,4 +10,5 @@ lightdm.conf.mit etc/lightdm
 config.ini etc/sign
 sign.ui usr/share/digital-signage
 sign.py usr/lib/digital-signage
-
+test-pattern.png usr/share/digital-signage
+web-auth.txt etc/sign

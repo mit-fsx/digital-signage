@@ -27,11 +27,12 @@ case "$1" in
 	    addgroup --system $group
 	fi
 	if ! getent passwd $user > /dev/null; then
-	    adduser --system $user --ingroup $group
+	    adduser --system $user --ingroup --shell /bin/sh $group
 	fi
 	# Return of '2' in modern lighty-enable-mod means 'no action taken'
-	lighty-enable-mod cgi >/dev/null 2>&1 || [ $? -eq 2 ]
-	lighty-enable-mod ssl >/dev/null 2>&1 || [ $? -eq 2 ]
+	for module in cgi ssl auth; do
+	    lighty-enable-mod $module >/dev/null 2>&1 || [ $? -eq 2 ]
+	done
 	adduser www-data $group
 	adduser www-data dialout
 	if ! diff -q /usr/share/digital-signage/dot-xsession /home/$user/.xsession >/dev/null 2>&1; then

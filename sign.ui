@@ -3,9 +3,11 @@
   <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkWindow" id="mainWindow">
     <property name="can_focus">False</property>
+    <property name="resizable">False</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="decorated">False</property>
+    <property name="has_resize_grip">False</property>
     <child>
       <object class="GtkNotebook" id="notebook1">
         <property name="visible">True</property>
@@ -171,10 +173,13 @@
           <object class="GtkImage" id="imgSign">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
             <property name="stock">gtk-missing-image</property>
           </object>
           <packing>
             <property name="position">1</property>
+            <property name="tab_expand">True</property>
           </packing>
         </child>
         <child type="tab">

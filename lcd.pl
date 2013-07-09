@@ -6,6 +6,7 @@ use strict;
 use lib '/usr/lib/digital-signage/perl5';
 use SharpLCD;
 use CGI qw(:standard);
+use CGI::Carp qw(fatalsToBrowser);
 
 print header, start_html('LCD Control');
 
