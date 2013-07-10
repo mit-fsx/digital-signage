@@ -1,6 +1,7 @@
 admin.pl usr/lib/digital-signage/cgi
 lcd.pl usr/lib/digital-signage/cgi
 lcdcontrol usr/lib/digital-signage
+reset-lcd.sh usr/lib/digital-signage
 SharpLCD.pm usr/lib/digital-signage/perl5
 index.html usr/share/digital-signage/docroot
 dot-xsession usr/share/digital-signage

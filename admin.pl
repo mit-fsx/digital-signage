@@ -90,7 +90,6 @@ print br;
 print filefield('uploadFile');
 print submit('Go');
 print end_form();
-print p("Download a sample presentation to create slides:", a({href=>"/assets/slides.odp"}, "ODP"), a({href=>"/assets/slides.ppt"}, "PPT"));
 
 if ($debug) {
     print Dump();
