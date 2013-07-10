@@ -27,7 +27,7 @@ case "$1" in
 	    addgroup --system $group
 	fi
 	if ! getent passwd $user > /dev/null; then
-	    adduser --system $user --ingroup --shell /bin/sh $group
+	    adduser --system $user --ingroup $group --shell /bin/sh
 	fi
 	# Return of '2' in modern lighty-enable-mod means 'no action taken'
 	for module in cgi ssl auth; do
