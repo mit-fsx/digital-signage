@@ -37,6 +37,8 @@ case "$1" in
 	adduser www-data dialout
 	if ! diff -q /usr/share/digital-signage/dot-xsession /home/$user/.xsession >/dev/null 2>&1; then
 	    cp -f /usr/share/digital-signage/dot-xsession /home/$user/.xsession
+	    chown $user:$group /home/$user/.xsession
+	    chmod 755 /home/$user/.xsession
 	    invoke-rc.d --force lightdm restart || :
 	fi
 	chown -R $user:$group $dir

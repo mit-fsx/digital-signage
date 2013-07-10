@@ -1,3 +1,15 @@
+digital-signage (1.4.2) unstable; urgency=low
+
+  * Make the .xsession owned correctly and mode 755
+
+ -- Jonathan Reed <jdreed@mit.edu>  Wed, 10 Jul 2013 16:08:47 -0400
+
+digital-signage (1.4.1) unstable; urgency=low
+
+  * Don't typo the second adduser invocation in the postinst
+
+ -- Jonathan Reed <jdreed@mit.edu>  Wed, 10 Jul 2013 15:56:24 -0400
+
 digital-signage (1.4) unstable; urgency=low
 
   * Add reset lcd script

@@ -4,5 +4,6 @@ Setting up a Pi for digital signage:
 1) Change /etc/network/interfaces to configure the interface appropriately
 2) Edit /etc/resolv.conf appropriately
 3) Set hostname in /etc/hostname
+3.5) Install server certs
 4) Add the repository
 
