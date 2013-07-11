@@ -44,6 +44,9 @@ case "$1" in
 	chown -R $user:$group $dir
 	chmod -R 770 $dir
 	invoke-rc.d lighttpd force-reload || :
+	if fgrep -q '[redacted]' /etc/sign/web-auth.txt; then
+	    echo "CHANGE THE BASICAUTH PASSWORD NOW!" >&2
+	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
